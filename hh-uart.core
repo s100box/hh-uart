@@ -1,0 +1,107 @@
+CAPI=2:
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+#
+# FuseSoC manifest for hh-uart: the portable file list and compile order.
+# Docs: https://fusesoc.readthedocs.io
+name: "hharte:serial:hh_uart:0.1.0"
+description: "UART building blocks: configurable-frame 16x-oversampling RX and TX cores, an exact-baud DDS generator, an 8250/16450/16550/16550A register-compatible UART, and the usb_serial_{if,fifo,chan} byte channel (SystemVerilog)"
+
+filesets:
+  rtl:
+    file_type: systemVerilogSource
+    files:
+      - rtl/uart_rx_core.sv
+      - rtl/uart_tx_core.sv
+      - rtl/uart_baud_dds.sv
+      - rtl/usb_serial_if.sv
+      - rtl/usb_serial_fifo.sv
+      - rtl/usb_serial_chan.sv
+      - rtl/uart16550.sv
+      - rtl/acia6551_to_usbserial.sv
+
+  tb_usb_serial_chan:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_usb_serial_chan.sv
+
+  tb_acia6551_to_usbserial:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_acia6551_to_usbserial.sv
+
+  tb_uart_tx_core:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_uart_tx_core.sv
+
+  tb_uart_rx_core:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_uart_rx_core.sv
+
+  tb_uart_baud_dds:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_uart_baud_dds.sv
+
+  tb_uart_loop:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_uart_loop.sv
+
+  tb_uart16550:
+    file_type: systemVerilogSource
+    files:
+      - sim/tb_uart16550.sv
+
+targets:
+  default: &default
+    filesets: [rtl]
+
+  lint:
+    <<: *default
+    default_tool: verilator
+    tools:
+      verilator:
+        mode: lint-only
+
+  # usb_serial_chan under iverilog. sim/build.ninja runs this bench twice --
+  # once plain and once with -DASYNC_MODE -- because SAME_CLOCK selects two
+  # different FIFO builds and only one of them is a CDC.
+  sim_usb_serial_chan:
+    default_tool: icarus
+    filesets: [rtl, tb_usb_serial_chan]
+    toplevel: tb_usb_serial_chan
+
+  sim_acia6551_to_usbserial:
+    default_tool: icarus
+    filesets: [rtl, tb_acia6551_to_usbserial]
+    toplevel: tb_acia6551_to_usbserial
+
+  sim_uart_tx_core:
+    default_tool: icarus
+    filesets: [rtl, tb_uart_tx_core]
+    toplevel: tb_uart_tx_core
+
+  sim_uart_rx_core:
+    default_tool: icarus
+    filesets: [rtl, tb_uart_rx_core]
+    toplevel: tb_uart_rx_core
+
+  sim_uart_baud_dds:
+    default_tool: icarus
+    filesets: [rtl, tb_uart_baud_dds]
+    toplevel: tb_uart_baud_dds
+
+  # The three UART cores as a looped-back UART.
+  sim_uart_loop:
+    default_tool: icarus
+    filesets: [rtl, tb_uart_loop]
+    toplevel: tb_uart_loop
+
+  # The 8250-family UART through its register interface.
+  sim_uart16550:
+    default_tool: icarus
+    filesets: [rtl, tb_uart16550]
+    toplevel: tb_uart16550

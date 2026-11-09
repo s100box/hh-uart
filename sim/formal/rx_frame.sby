@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+all_prove
+all_cover
+all_negative
+
+[options]
+timeout 240
+all_prove: mode prove
+all_prove: depth 220
+all_cover: mode cover
+all_cover: depth 220
+all_negative: mode bmc
+all_negative: depth 220
+
+[engines]
+all_prove: abc pdr
+all_cover: smtbmc boolector
+all_negative: abc bmc3
+
+[script]
+plugin -i slang
+all_prove: read_slang --top rx_frame_formal  uart_rx_core.sv rx_frame_formal.sv
+all_cover: read_slang --top rx_frame_formal  uart_rx_core.sv rx_frame_formal.sv
+all_negative: read_slang -D FORMAL_NEGATIVE --top rx_frame_formal  uart_rx_core.sv rx_frame_formal.sv
+prep -top rx_frame_formal
+
+[files]
+../../rtl/uart_rx_core.sv
+rx_frame_formal.sv

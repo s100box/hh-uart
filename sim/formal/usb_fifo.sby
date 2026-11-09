@@ -1,0 +1,125 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+sync2_prove
+sync2_cover
+sync2_negative
+sync4_prove
+sync4_cover
+sync4_negative
+sync8_prove
+sync8_cover
+sync8_negative
+sync16_prove
+sync16_cover
+sync16_negative
+async4_prove
+async4_cover
+async4_negative
+async8_prove
+async8_cover
+async8_negative
+async16_prove
+async16_cover
+async16_negative
+
+[options]
+timeout 240
+sync2_prove: mode prove
+sync2_prove: depth 256
+sync2_cover: mode cover
+sync2_cover: depth 256
+sync2_negative: mode bmc
+sync2_negative: depth 256
+sync4_prove: mode prove
+sync4_prove: depth 256
+sync4_cover: mode cover
+sync4_cover: depth 256
+sync4_negative: mode bmc
+sync4_negative: depth 256
+sync8_prove: mode prove
+sync8_prove: depth 256
+sync8_cover: mode cover
+sync8_cover: depth 256
+sync8_negative: mode bmc
+sync8_negative: depth 256
+sync16_prove: mode prove
+sync16_prove: depth 256
+sync16_cover: mode cover
+sync16_cover: depth 256
+sync16_negative: mode bmc
+sync16_negative: depth 256
+async4_prove: mode prove
+async4_prove: depth 24
+async4_cover: mode cover
+async4_cover: depth 256
+async4_negative: mode bmc
+async4_negative: depth 256
+async8_prove: mode prove
+async8_prove: depth 24
+async8_cover: mode cover
+async8_cover: depth 256
+async8_negative: mode bmc
+async8_negative: depth 256
+async16_prove: mode prove
+async16_prove: depth 24
+async16_cover: mode cover
+async16_cover: depth 256
+async16_negative: mode bmc
+async16_negative: depth 256
+multiclock on
+
+[engines]
+sync2_prove: abc pdr
+sync2_cover: smtbmc boolector
+sync2_negative: abc bmc3
+sync4_prove: abc pdr
+sync4_cover: smtbmc boolector
+sync4_negative: abc bmc3
+sync8_prove: abc pdr
+sync8_cover: smtbmc boolector
+sync8_negative: abc bmc3
+sync16_prove: abc pdr
+sync16_cover: smtbmc boolector
+sync16_negative: abc bmc3
+async4_prove: smtbmc boolector
+async4_cover: smtbmc boolector
+async4_negative: abc bmc3
+async8_prove: smtbmc boolector
+async8_cover: smtbmc boolector
+async8_negative: abc bmc3
+async16_prove: smtbmc boolector
+async16_cover: smtbmc boolector
+async16_negative: abc bmc3
+
+[script]
+plugin -i slang
+sync2_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=2 usb_serial_fifo.sv usb_fifo_formal.sv
+sync2_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=2 usb_serial_fifo.sv usb_fifo_formal.sv
+sync2_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=2 usb_serial_fifo.sv usb_fifo_formal.sv
+sync4_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=4 usb_serial_fifo.sv usb_fifo_formal.sv
+sync4_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=4 usb_serial_fifo.sv usb_fifo_formal.sv
+sync4_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=4 usb_serial_fifo.sv usb_fifo_formal.sv
+sync8_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=8 usb_serial_fifo.sv usb_fifo_formal.sv
+sync8_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=8 usb_serial_fifo.sv usb_fifo_formal.sv
+sync8_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=8 usb_serial_fifo.sv usb_fifo_formal.sv
+sync16_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=16 usb_serial_fifo.sv usb_fifo_formal.sv
+sync16_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=16 usb_serial_fifo.sv usb_fifo_formal.sv
+sync16_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=1 -G DEPTH=16 usb_serial_fifo.sv usb_fifo_formal.sv
+async4_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=4 usb_serial_fifo.sv usb_fifo_formal.sv
+async4_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=4 usb_serial_fifo.sv usb_fifo_formal.sv
+async4_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=4 usb_serial_fifo.sv usb_fifo_formal.sv
+async8_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=8 usb_serial_fifo.sv usb_fifo_formal.sv
+async8_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=8 usb_serial_fifo.sv usb_fifo_formal.sv
+async8_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=8 usb_serial_fifo.sv usb_fifo_formal.sv
+async16_prove: read_slang --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=16 usb_serial_fifo.sv usb_fifo_formal.sv
+async16_cover: read_slang --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=16 usb_serial_fifo.sv usb_fifo_formal.sv
+async16_negative: read_slang -D FORMAL_NEGATIVE --top usb_fifo_formal -G SAME_CLOCK=0 -G DEPTH=16 usb_serial_fifo.sv usb_fifo_formal.sv
+read_verilog -formal -sv usb_fifo_clock_formal.sv
+prep -top usb_fifo_clock_formal
+
+[files]
+../../rtl/usb_serial_fifo.sv
+usb_fifo_formal.sv
+usb_fifo_clock_formal.sv

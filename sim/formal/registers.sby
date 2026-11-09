@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+8250_prove
+8250_cover
+8250_negative
+16450_prove
+16450_cover
+16450_negative
+16550_prove
+16550_cover
+16550_negative
+16550a_prove
+16550a_cover
+16550a_negative
+
+[options]
+timeout 240
+8250_prove: mode prove
+8250_prove: depth 12
+8250_cover: mode cover
+8250_cover: depth 12
+8250_negative: mode bmc
+8250_negative: depth 12
+16450_prove: mode prove
+16450_prove: depth 12
+16450_cover: mode cover
+16450_cover: depth 12
+16450_negative: mode bmc
+16450_negative: depth 12
+16550_prove: mode prove
+16550_prove: depth 12
+16550_cover: mode cover
+16550_cover: depth 12
+16550_negative: mode bmc
+16550_negative: depth 12
+16550a_prove: mode prove
+16550a_prove: depth 12
+16550a_cover: mode cover
+16550a_cover: depth 12
+16550a_negative: mode bmc
+16550a_negative: depth 12
+
+[engines]
+8250_prove: smtbmc boolector
+8250_cover: smtbmc boolector
+8250_negative: smtbmc boolector
+16450_prove: smtbmc boolector
+16450_cover: smtbmc boolector
+16450_negative: smtbmc boolector
+16550_prove: smtbmc boolector
+16550_cover: smtbmc boolector
+16550_negative: smtbmc boolector
+16550a_prove: smtbmc boolector
+16550a_cover: smtbmc boolector
+16550a_negative: smtbmc boolector
+
+[script]
+plugin -i slang
+8250_prove: read_slang --top uart16550_formal -G VARIANT=0 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+8250_cover: read_slang --top uart16550_formal -G VARIANT=0 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+8250_negative: read_slang -D FORMAL_NEGATIVE --top uart16550_formal -G VARIANT=0 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16450_prove: read_slang --top uart16550_formal -G VARIANT=1 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16450_cover: read_slang --top uart16550_formal -G VARIANT=1 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16450_negative: read_slang -D FORMAL_NEGATIVE --top uart16550_formal -G VARIANT=1 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16550_prove: read_slang --top uart16550_formal -G VARIANT=2 -G CLK_HZ=11059200 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16550_cover: read_slang --top uart16550_formal -G VARIANT=2 -G CLK_HZ=11059200 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16550_negative: read_slang -D FORMAL_NEGATIVE --top uart16550_formal -G VARIANT=2 -G CLK_HZ=11059200 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16550a_prove: read_slang --top uart16550_formal -G VARIANT=3 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16550a_cover: read_slang --top uart16550_formal -G VARIANT=3 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+16550a_negative: read_slang -D FORMAL_NEGATIVE --top uart16550_formal -G VARIANT=3 -G CLK_HZ=7372800 uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+prep -top uart16550_formal
+
+[files]
+../../rtl/uart_baud_dds.sv
+../../rtl/uart_tx_core.sv
+../../rtl/uart_rx_core.sv
+../../rtl/uart16550.sv
+uart16550_formal.sv

@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+# Verible lint rule configuration for hh-uart (read via --rules_config_search).
+# Keep this list MINIMAL -- fix warnings in the RTL rather than waiving. Every
+# waiver added here needs a one-line justification above it. The current RTL
+# lints clean under Verible's default rule set, so there are none.

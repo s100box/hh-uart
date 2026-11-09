@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+# SymbiYosys job: prove the invariants in uart_cores_formal.sv on the three
+# UART cores by k-induction. Run from sim/ with `ninja formal` (or
+# `sby -f formal/uart_cores.sby`); every task must end PASS.
+[options]
+mode prove
+depth 8
+
+[engines]
+smtbmc boolector
+
+[script]
+# The slang frontend: yosys's own Verilog reader drops `bind` silently, which
+# would leave the proof with no assertions at all (the mutant check in
+# doc/coverage.md guards against exactly that).
+plugin -i slang
+read_slang --top uart_cores_formal uart_rx_core.sv uart_tx_core.sv uart_baud_dds.sv uart_cores_formal.sv
+prep -top uart_cores_formal
+
+[files]
+../../rtl/uart_rx_core.sv
+../../rtl/uart_tx_core.sv
+../../rtl/uart_baud_dds.sv
+uart_cores_formal.sv

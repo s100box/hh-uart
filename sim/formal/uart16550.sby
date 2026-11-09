@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+# SymbiYosys job: prove the invariants in uart16550_formal.sv on the 16550A
+# by k-induction. Run from sim/ with `ninja formal` (or
+# `sby -f formal/uart16550.sby`); the task must end PASS.
+[options]
+mode prove
+depth 4
+
+[engines]
+smtbmc boolector
+
+[script]
+# The slang frontend, as in uart_cores.sby: yosys's own reader drops `bind`.
+plugin -i slang
+read_slang --top uart16550_formal uart_baud_dds.sv uart_tx_core.sv uart_rx_core.sv uart16550.sv uart16550_formal.sv
+prep -top uart16550_formal
+
+[files]
+../../rtl/uart_baud_dds.sv
+../../rtl/uart_tx_core.sv
+../../rtl/uart_rx_core.sv
+../../rtl/uart16550.sv
+uart16550_formal.sv

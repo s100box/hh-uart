@@ -1,0 +1,2 @@
+# Normalize to LF (Verible aborts on CRLF; sh hooks need LF).
+* text=auto eol=lf

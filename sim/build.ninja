@@ -1,0 +1,139 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+# hh-uart gate driver. `ninja` = the Verible gate (syntax + lint +
+# format-check); `ninja bench` runs every self-checking bench under iverilog
+# (tb_usb_serial_chan in both clocking modes, the 6551 adapter, the three UART-core benches, the
+# loopback and the 16550); `ninja formal` proves the invariants doc/coverage.md relies on
+# and uart16550's FIFO bookkeeping (SymbiYosys). `bench` needs iverilog and vvp on
+# PATH, `formal` needs sby.
+#
+# The Verible tool paths ($verible_syntax, $verible_lint, $verible_format) come
+# from the sibling checkout retrosim-build's toolchain.ninja, the one file in
+# the workspace that names a tool install; edit it there to move versions.
+include ../../retrosim-build/toolchain.ninja
+
+format_flags = --flagfile=../.verible.format
+
+rule syntax_rule
+  command = $verible_syntax --error_limit=0 $in
+  description = SYNTAX  $in
+
+rule lint_rule
+  command = $verible_lint --rules_config_search $in
+  description = LINT    $in
+
+rule format_check_rule
+  command = $verible_format $format_flags --inplace --verify $in
+  description = FMTCHK  $in
+
+rule iverilog_compile
+  command = iverilog -g2012 $flags -o $out $in
+  description = IVERILOG $out
+
+rule vvp_run
+  command = vvp $in
+  description = VVP     $in
+  pool = console
+
+rule formal_suite
+  command = python ../../retrosim-build/tools/formal_suite.py formal/suite.json $filter $negative
+  description = FORMAL $filter
+  pool = console
+
+rule check_oracles
+  command = python test_bench_checks.py
+  description = CHECK four-state bench assertion helpers
+build .syntax_stamp: syntax_rule ../rtl/uart_rx_core.sv ../rtl/uart_tx_core.sv $
+    ../rtl/uart_baud_dds.sv ../rtl/usb_serial_if.sv ../rtl/usb_serial_fifo.sv $
+    ../rtl/usb_serial_chan.sv ../rtl/uart16550.sv ../rtl/acia6551_to_usbserial.sv $
+    tb_usb_serial_chan.sv tb_acia6551_to_usbserial.sv tb_uart_tx_core.sv $
+    tb_uart_rx_core.sv tb_uart_baud_dds.sv tb_uart_loop.sv tb_uart16550.sv $
+    formal/uart_cores_formal.sv formal/uart16550_formal.sv $
+    formal/usb_fifo_formal.sv formal/tx_frame_formal.sv $
+    formal/rx_frame_formal.sv formal/rx_wire_formal.sv $
+    formal/baud_timing_formal.sv $
+    formal/channel_formal.sv $
+    formal/channel_clock_formal.sv $
+    formal/usb_fifo_clock_formal.sv
+build .lint_stamp: lint_rule ../rtl/uart_rx_core.sv ../rtl/uart_tx_core.sv $
+    ../rtl/uart_baud_dds.sv ../rtl/usb_serial_if.sv ../rtl/usb_serial_fifo.sv $
+    ../rtl/usb_serial_chan.sv ../rtl/uart16550.sv ../rtl/acia6551_to_usbserial.sv $
+    tb_usb_serial_chan.sv tb_acia6551_to_usbserial.sv tb_uart_tx_core.sv $
+    tb_uart_rx_core.sv tb_uart_baud_dds.sv tb_uart_loop.sv tb_uart16550.sv $
+    formal/uart_cores_formal.sv formal/uart16550_formal.sv $
+    formal/usb_fifo_formal.sv formal/tx_frame_formal.sv $
+    formal/rx_frame_formal.sv formal/rx_wire_formal.sv $
+    formal/baud_timing_formal.sv $
+    formal/channel_formal.sv $
+    formal/channel_clock_formal.sv $
+    formal/usb_fifo_clock_formal.sv
+build .format_stamp: format_check_rule ../rtl/uart_rx_core.sv ../rtl/uart_tx_core.sv $
+    ../rtl/uart_baud_dds.sv ../rtl/usb_serial_if.sv ../rtl/usb_serial_fifo.sv $
+    ../rtl/usb_serial_chan.sv ../rtl/uart16550.sv ../rtl/acia6551_to_usbserial.sv $
+    tb_usb_serial_chan.sv tb_acia6551_to_usbserial.sv tb_uart_tx_core.sv $
+    tb_uart_rx_core.sv tb_uart_baud_dds.sv tb_uart_loop.sv tb_uart16550.sv $
+    formal/uart_cores_formal.sv formal/uart16550_formal.sv $
+    formal/usb_fifo_formal.sv formal/tx_frame_formal.sv $
+    formal/rx_frame_formal.sv formal/rx_wire_formal.sv $
+    formal/baud_timing_formal.sv $
+    formal/channel_formal.sv $
+    formal/channel_clock_formal.sv $
+    formal/usb_fifo_clock_formal.sv
+build syntax: phony .syntax_stamp
+build lint-only: phony .lint_stamp
+build format-check: phony .format_stamp
+default syntax lint-only format-check
+
+# usb_serial_chan + the FIFO under it, both clocking builds.
+build tb_uss_sync.vvp: iverilog_compile ../rtl/usb_serial_if.sv $
+    ../rtl/usb_serial_fifo.sv ../rtl/usb_serial_chan.sv tb_usb_serial_chan.sv
+build tb_uss_async.vvp: iverilog_compile ../rtl/usb_serial_if.sv $
+    ../rtl/usb_serial_fifo.sv ../rtl/usb_serial_chan.sv tb_usb_serial_chan.sv
+  flags = -DASYNC_MODE
+build bench-sync: vvp_run tb_uss_sync.vvp
+build bench-async: vvp_run tb_uss_async.vvp
+
+# The 6551 ACIA adapter on a shared-clock channel.
+build tb_acia6551_to_usbserial.vvp: iverilog_compile ../rtl/usb_serial_if.sv $
+    ../rtl/usb_serial_fifo.sv ../rtl/usb_serial_chan.sv ../rtl/acia6551_to_usbserial.sv $
+    tb_acia6551_to_usbserial.sv
+build bench-acia: vvp_run tb_acia6551_to_usbserial.vvp
+
+# The UART cores, each alone, then the three together as a looped-back UART.
+build tb_uart_tx_core.vvp: iverilog_compile ../rtl/uart_tx_core.sv tb_uart_tx_core.sv
+build tb_uart_rx_core.vvp: iverilog_compile ../rtl/uart_rx_core.sv tb_uart_rx_core.sv
+build tb_uart_baud_dds.vvp: iverilog_compile ../rtl/uart_baud_dds.sv tb_uart_baud_dds.sv
+build tb_uart_loop.vvp: iverilog_compile ../rtl/uart_baud_dds.sv ../rtl/uart_tx_core.sv $
+    ../rtl/uart_rx_core.sv tb_uart_loop.sv
+build tb_uart16550.vvp: iverilog_compile ../rtl/uart_baud_dds.sv ../rtl/uart_tx_core.sv $
+    ../rtl/uart_rx_core.sv ../rtl/uart16550.sv tb_uart16550.sv
+build bench-tx: vvp_run tb_uart_tx_core.vvp
+build bench-rx: vvp_run tb_uart_rx_core.vvp
+build bench-baud: vvp_run tb_uart_baud_dds.vvp
+build bench-loop: vvp_run tb_uart_loop.vvp
+build bench-16550: vvp_run tb_uart16550.vvp
+
+build bench-checks: check_oracles test_bench_checks.py tb_usb_serial_chan.sv $
+    tb_acia6551_to_usbserial.sv tb_uart_tx_core.sv tb_uart_rx_core.sv $
+    tb_uart_baud_dds.sv tb_uart_loop.sv tb_uart16550.sv ../rtl/usb_serial_if.sv
+build bench: phony bench-checks bench-sync bench-async bench-acia bench-tx bench-rx bench-baud bench-loop bench-16550
+
+# Optional formal checks and audited negative controls.
+build formal: formal_suite formal/suite.json || syntax lint-only format-check
+build formal-negative: formal_suite formal/suite.json || syntax lint-only format-check
+  negative = --negative
+build formal-cores: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = cores
+build formal-16550: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = registers
+build formal-fifo: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = usb_fifo
+build formal-frame: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = tx_frame
+
+build formal-rx: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = rx_
+build formal-channel: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = channel
+build formal-baud: formal_suite formal/suite.json || syntax lint-only format-check
+  filter = baud_timing

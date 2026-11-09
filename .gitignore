@@ -1,0 +1,24 @@
+# Generated build state and gate outputs. sim/build.ninja itself is
+# hand-written source and stays tracked.
+sim/.ninja_log
+sim/.ninja_deps
+
+# `ninja` gate stamps (syntax / lint / format-check)
+sim/.syntax_stamp
+sim/.lint_stamp
+sim/.format_stamp
+
+# `ninja bench` -- iverilog products
+sim/*.vvp
+
+# Verilator coverage suite (sim/vl): the CMake build tree and run artifacts.
+# sim/vl/CMakeLists.txt, coverage.vlt, cov.ps1 and empty_main.cpp are source.
+sim/vl/build/
+sim/vl/build-*/
+# Verilator's default output when a coverage executable is run directly.
+coverage.dat
+
+# `ninja formal` -- SymbiYosys work directories
+sim/formal/uart_cores/
+sim/formal/uart16550/
+sim/formal/build/

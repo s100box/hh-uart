@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: MIT OR Apache-2.0
+// SPDX-FileCopyrightText: 2026 Howard M. Harte
+// Coverage focus filter (passed to every verilate() under VL_COVERAGE).
+// Turns coverage instrumentation OFF for the testbenches so the merged report
+// scopes to the synthesizable RTL (rtl/*.sv). Substring globs (leading '*'):
+// the stored source paths mix '/' and '\' separators, so anchor on the basename
+// fragment, not the directory.
+`verilator_config
+coverage_off -file "*tb_*"
+coverage_off -file "*verilated_std*"

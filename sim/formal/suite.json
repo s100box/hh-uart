@@ -1,0 +1,634 @@
+{
+  "max_jobs": 2,
+  "jobs": [
+    {
+      "name": "cores_prove",
+      "file": "uart_cores.sby",
+      "expect": "PASS",
+      "assert_min": 13,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_8250_prove",
+      "file": "registers.sby",
+      "task": "8250_prove",
+      "expect": "PASS",
+      "assert_min": 66,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_8250_cover",
+      "file": "registers.sby",
+      "task": "8250_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 3,
+      "timeout": 300
+    },
+    {
+      "name": "registers_8250_negative",
+      "file": "registers.sby",
+      "task": "8250_negative",
+      "expect": "FAIL",
+      "assert_min": 67,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16450_prove",
+      "file": "registers.sby",
+      "task": "16450_prove",
+      "expect": "PASS",
+      "assert_min": 66,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16450_cover",
+      "file": "registers.sby",
+      "task": "16450_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 3,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16450_negative",
+      "file": "registers.sby",
+      "task": "16450_negative",
+      "expect": "FAIL",
+      "assert_min": 67,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16550_prove",
+      "file": "registers.sby",
+      "task": "16550_prove",
+      "expect": "PASS",
+      "assert_min": 66,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16550_cover",
+      "file": "registers.sby",
+      "task": "16550_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 3,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16550_negative",
+      "file": "registers.sby",
+      "task": "16550_negative",
+      "expect": "FAIL",
+      "assert_min": 67,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16550a_prove",
+      "file": "registers.sby",
+      "task": "16550a_prove",
+      "expect": "PASS",
+      "assert_min": 68,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16550a_cover",
+      "file": "registers.sby",
+      "task": "16550a_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 3,
+      "timeout": 300
+    },
+    {
+      "name": "registers_16550a_negative",
+      "file": "registers.sby",
+      "task": "16550a_negative",
+      "expect": "FAIL",
+      "assert_min": 69,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "tx_frame_direct_prove",
+      "file": "tx_frame.sby",
+      "task": "direct_prove",
+      "expect": "PASS",
+      "assert_min": 6,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "tx_frame_direct_cover",
+      "file": "tx_frame.sby",
+      "task": "direct_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 2,
+      "timeout": 300
+    },
+    {
+      "name": "tx_frame_direct_negative",
+      "file": "tx_frame.sby",
+      "task": "direct_negative",
+      "expect": "FAIL",
+      "assert_min": 7,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "tx_frame_buffered_prove",
+      "file": "tx_frame.sby",
+      "task": "buffered_prove",
+      "expect": "PASS",
+      "assert_min": 8,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "tx_frame_buffered_cover",
+      "file": "tx_frame.sby",
+      "task": "buffered_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 2,
+      "timeout": 300
+    },
+    {
+      "name": "tx_frame_buffered_negative",
+      "file": "tx_frame.sby",
+      "task": "buffered_negative",
+      "expect": "FAIL",
+      "assert_min": 9,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "rx_frame_all_prove",
+      "file": "rx_frame.sby",
+      "task": "all_prove",
+      "expect": "PASS",
+      "assert_min": 17,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "rx_frame_all_cover",
+      "file": "rx_frame.sby",
+      "task": "all_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "rx_frame_all_negative",
+      "file": "rx_frame.sby",
+      "task": "all_negative",
+      "expect": "FAIL",
+      "assert_min": 18,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync2_prove",
+      "file": "usb_fifo.sby",
+      "task": "sync2_prove",
+      "expect": "PASS",
+      "assert_min": 11,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync2_cover",
+      "file": "usb_fifo.sby",
+      "task": "sync2_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync2_negative",
+      "file": "usb_fifo.sby",
+      "task": "sync2_negative",
+      "expect": "FAIL",
+      "assert_min": 12,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync4_prove",
+      "file": "usb_fifo.sby",
+      "task": "sync4_prove",
+      "expect": "PASS",
+      "assert_min": 15,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync4_cover",
+      "file": "usb_fifo.sby",
+      "task": "sync4_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync4_negative",
+      "file": "usb_fifo.sby",
+      "task": "sync4_negative",
+      "expect": "FAIL",
+      "assert_min": 16,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync8_prove",
+      "file": "usb_fifo.sby",
+      "task": "sync8_prove",
+      "expect": "PASS",
+      "assert_min": 23,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync8_cover",
+      "file": "usb_fifo.sby",
+      "task": "sync8_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync8_negative",
+      "file": "usb_fifo.sby",
+      "task": "sync8_negative",
+      "expect": "FAIL",
+      "assert_min": 24,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync16_prove",
+      "file": "usb_fifo.sby",
+      "task": "sync16_prove",
+      "expect": "PASS",
+      "assert_min": 39,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync16_cover",
+      "file": "usb_fifo.sby",
+      "task": "sync16_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_sync16_negative",
+      "file": "usb_fifo.sby",
+      "task": "sync16_negative",
+      "expect": "FAIL",
+      "assert_min": 40,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async4_prove",
+      "file": "usb_fifo.sby",
+      "task": "async4_prove",
+      "expect": "PASS",
+      "assert_min": 35,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async4_cover",
+      "file": "usb_fifo.sby",
+      "task": "async4_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async4_negative",
+      "file": "usb_fifo.sby",
+      "task": "async4_negative",
+      "expect": "FAIL",
+      "assert_min": 36,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async8_prove",
+      "file": "usb_fifo.sby",
+      "task": "async8_prove",
+      "expect": "PASS",
+      "assert_min": 43,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async8_cover",
+      "file": "usb_fifo.sby",
+      "task": "async8_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async8_negative",
+      "file": "usb_fifo.sby",
+      "task": "async8_negative",
+      "expect": "FAIL",
+      "assert_min": 44,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async16_prove",
+      "file": "usb_fifo.sby",
+      "task": "async16_prove",
+      "expect": "PASS",
+      "assert_min": 59,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async16_cover",
+      "file": "usb_fifo.sby",
+      "task": "async16_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 4,
+      "timeout": 300
+    },
+    {
+      "name": "usb_fifo_async16_negative",
+      "file": "usb_fifo.sby",
+      "task": "async16_negative",
+      "expect": "FAIL",
+      "assert_min": 60,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_sync0_prove",
+      "file": "channel.sby",
+      "task": "sync0_prove",
+      "expect": "PASS",
+      "assert_min": 50,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_sync0_cover",
+      "file": "channel.sby",
+      "task": "sync0_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 6,
+      "timeout": 300
+    },
+    {
+      "name": "channel_sync0_negative",
+      "file": "channel.sby",
+      "task": "sync0_negative",
+      "expect": "FAIL",
+      "assert_min": 51,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_sync1_prove",
+      "file": "channel.sby",
+      "task": "sync1_prove",
+      "expect": "PASS",
+      "assert_min": 46,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_sync1_cover",
+      "file": "channel.sby",
+      "task": "sync1_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 5,
+      "timeout": 300
+    },
+    {
+      "name": "channel_sync1_negative",
+      "file": "channel.sby",
+      "task": "sync1_negative",
+      "expect": "FAIL",
+      "assert_min": 47,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_async0_prove",
+      "file": "channel.sby",
+      "task": "async0_prove",
+      "expect": "PASS",
+      "assert_min": 78,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_async0_cover",
+      "file": "channel.sby",
+      "task": "async0_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 6,
+      "timeout": 300
+    },
+    {
+      "name": "channel_async0_negative",
+      "file": "channel.sby",
+      "task": "async0_negative",
+      "expect": "FAIL",
+      "assert_min": 79,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_async1_prove",
+      "file": "channel.sby",
+      "task": "async1_prove",
+      "expect": "PASS",
+      "assert_min": 77,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "channel_async1_cover",
+      "file": "channel.sby",
+      "task": "async1_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 5,
+      "timeout": 300
+    },
+    {
+      "name": "channel_async1_negative",
+      "file": "channel.sby",
+      "task": "async1_negative",
+      "expect": "FAIL",
+      "assert_min": 78,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_integer_prove",
+      "file": "baud_timing.sby",
+      "task": "integer_prove",
+      "expect": "PASS",
+      "assert_min": 20,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_integer_cover",
+      "file": "baud_timing.sby",
+      "task": "integer_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 2,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_integer_negative",
+      "file": "baud_timing.sby",
+      "task": "integer_negative",
+      "expect": "FAIL",
+      "assert_min": 21,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_fractional_prove",
+      "file": "baud_timing.sby",
+      "task": "fractional_prove",
+      "expect": "PASS",
+      "assert_min": 20,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_fractional_cover",
+      "file": "baud_timing.sby",
+      "task": "fractional_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 2,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_fractional_negative",
+      "file": "baud_timing.sby",
+      "task": "fractional_negative",
+      "expect": "FAIL",
+      "assert_min": 21,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_divide_three_prove",
+      "file": "baud_timing.sby",
+      "task": "divide_three_prove",
+      "expect": "PASS",
+      "assert_min": 20,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_divide_three_cover",
+      "file": "baud_timing.sby",
+      "task": "divide_three_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 2,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_divide_three_negative",
+      "file": "baud_timing.sby",
+      "task": "divide_three_negative",
+      "expect": "FAIL",
+      "assert_min": 21,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_near_reference_prove",
+      "file": "baud_timing.sby",
+      "task": "near_reference_prove",
+      "expect": "PASS",
+      "assert_min": 20,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_near_reference_cover",
+      "file": "baud_timing.sby",
+      "task": "near_reference_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 2,
+      "timeout": 300
+    },
+    {
+      "name": "baud_timing_near_reference_negative",
+      "file": "baud_timing.sby",
+      "task": "near_reference_negative",
+      "expect": "FAIL",
+      "assert_min": 21,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "rx_wire_jitter_prove",
+      "file": "rx_wire.sby",
+      "task": "jitter_prove",
+      "expect": "PASS",
+      "assert_min": 49,
+      "cover_min": 0,
+      "timeout": 300
+    },
+    {
+      "name": "rx_wire_jitter_cover",
+      "file": "rx_wire.sby",
+      "task": "jitter_cover",
+      "expect": "PASS",
+      "assert_min": 0,
+      "cover_min": 7,
+      "timeout": 300
+    },
+    {
+      "name": "rx_wire_jitter_negative",
+      "file": "rx_wire.sby",
+      "task": "jitter_negative",
+      "expect": "FAIL",
+      "assert_min": 50,
+      "cover_min": 0,
+      "timeout": 300
+    }
+  ]
+}

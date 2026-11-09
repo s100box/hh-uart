@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+direct_prove
+direct_cover
+direct_negative
+buffered_prove
+buffered_cover
+buffered_negative
+
+[options]
+timeout 240
+direct_prove: mode prove
+direct_prove: depth 32
+direct_cover: mode cover
+direct_cover: depth 32
+direct_negative: mode bmc
+direct_negative: depth 32
+buffered_prove: mode prove
+buffered_prove: depth 32
+buffered_cover: mode cover
+buffered_cover: depth 32
+buffered_negative: mode bmc
+buffered_negative: depth 32
+
+[engines]
+direct_prove: abc pdr
+direct_cover: smtbmc boolector
+direct_negative: smtbmc boolector
+buffered_prove: abc pdr
+buffered_cover: smtbmc boolector
+buffered_negative: smtbmc boolector
+
+[script]
+plugin -i slang
+direct_prove: read_slang --top tx_frame_formal -G HOLD=0 uart_tx_core.sv tx_frame_formal.sv
+direct_cover: read_slang --top tx_frame_formal -G HOLD=0 uart_tx_core.sv tx_frame_formal.sv
+direct_negative: read_slang -D FORMAL_NEGATIVE --top tx_frame_formal -G HOLD=0 uart_tx_core.sv tx_frame_formal.sv
+buffered_prove: read_slang --top tx_frame_formal -G HOLD=1 uart_tx_core.sv tx_frame_formal.sv
+buffered_cover: read_slang --top tx_frame_formal -G HOLD=1 uart_tx_core.sv tx_frame_formal.sv
+buffered_negative: read_slang -D FORMAL_NEGATIVE --top tx_frame_formal -G HOLD=1 uart_tx_core.sv tx_frame_formal.sv
+prep -top tx_frame_formal
+
+[files]
+../../rtl/uart_tx_core.sv
+tx_frame_formal.sv

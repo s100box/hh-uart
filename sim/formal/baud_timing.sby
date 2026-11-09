@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+integer_prove
+integer_cover
+integer_negative
+fractional_prove
+fractional_cover
+fractional_negative
+divide_three_prove
+divide_three_cover
+divide_three_negative
+near_reference_prove
+near_reference_cover
+near_reference_negative
+
+[options]
+timeout 240
+integer_prove: mode prove
+integer_prove: depth 12
+integer_cover: mode cover
+integer_cover: depth 320
+integer_negative: mode bmc
+integer_negative: depth 320
+fractional_prove: mode prove
+fractional_prove: depth 12
+fractional_cover: mode cover
+fractional_cover: depth 320
+fractional_negative: mode bmc
+fractional_negative: depth 320
+divide_three_prove: mode prove
+divide_three_prove: depth 12
+divide_three_cover: mode cover
+divide_three_cover: depth 320
+divide_three_negative: mode bmc
+divide_three_negative: depth 320
+near_reference_prove: mode prove
+near_reference_prove: depth 12
+near_reference_cover: mode cover
+near_reference_cover: depth 320
+near_reference_negative: mode bmc
+near_reference_negative: depth 320
+
+[engines]
+integer_prove: smtbmc boolector
+integer_cover: smtbmc boolector
+integer_negative: abc bmc3
+fractional_prove: smtbmc boolector
+fractional_cover: smtbmc boolector
+fractional_negative: abc bmc3
+divide_three_prove: smtbmc boolector
+divide_three_cover: smtbmc boolector
+divide_three_negative: abc bmc3
+near_reference_prove: smtbmc boolector
+near_reference_cover: smtbmc boolector
+near_reference_negative: abc bmc3
+
+[script]
+plugin -i slang
+integer_prove: read_slang --top baud_timing_formal -G CLOCK=8 -G REFERENCE=2 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+integer_cover: read_slang --top baud_timing_formal -G CLOCK=8 -G REFERENCE=2 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+integer_negative: read_slang -D FORMAL_NEGATIVE --top baud_timing_formal -G CLOCK=8 -G REFERENCE=2 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+fractional_prove: read_slang --top baud_timing_formal -G CLOCK=7 -G REFERENCE=3 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+fractional_cover: read_slang --top baud_timing_formal -G CLOCK=7 -G REFERENCE=3 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+fractional_negative: read_slang -D FORMAL_NEGATIVE --top baud_timing_formal -G CLOCK=7 -G REFERENCE=3 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+divide_three_prove: read_slang --top baud_timing_formal -G CLOCK=5 -G REFERENCE=2 -G DIVISOR=3 uart_baud_dds.sv baud_timing_formal.sv
+divide_three_cover: read_slang --top baud_timing_formal -G CLOCK=5 -G REFERENCE=2 -G DIVISOR=3 uart_baud_dds.sv baud_timing_formal.sv
+divide_three_negative: read_slang -D FORMAL_NEGATIVE --top baud_timing_formal -G CLOCK=5 -G REFERENCE=2 -G DIVISOR=3 uart_baud_dds.sv baud_timing_formal.sv
+near_reference_prove: read_slang --top baud_timing_formal -G CLOCK=3 -G REFERENCE=2 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+near_reference_cover: read_slang --top baud_timing_formal -G CLOCK=3 -G REFERENCE=2 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+near_reference_negative: read_slang -D FORMAL_NEGATIVE --top baud_timing_formal -G CLOCK=3 -G REFERENCE=2 -G DIVISOR=1 uart_baud_dds.sv baud_timing_formal.sv
+prep -top baud_timing_formal
+
+[files]
+../../rtl/uart_baud_dds.sv
+baud_timing_formal.sv

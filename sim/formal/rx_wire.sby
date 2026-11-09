@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+jitter_prove
+jitter_cover
+jitter_negative
+
+[options]
+timeout 240
+jitter_prove: mode prove
+jitter_prove: depth 24
+jitter_cover: mode cover
+jitter_cover: depth 320
+jitter_negative: mode bmc
+jitter_negative: depth 320
+
+[engines]
+jitter_prove: smtbmc boolector
+jitter_cover: smtbmc boolector
+jitter_negative: abc bmc3
+
+[script]
+plugin -i slang
+jitter_prove: read_slang --top rx_wire_formal  uart_rx_core.sv rx_frame_formal.sv rx_wire_formal.sv
+jitter_cover: read_slang --top rx_wire_formal  uart_rx_core.sv rx_frame_formal.sv rx_wire_formal.sv
+jitter_negative: read_slang -D FORMAL_NEGATIVE --top rx_wire_formal  uart_rx_core.sv rx_frame_formal.sv rx_wire_formal.sv
+prep -top rx_wire_formal
+
+[files]
+../../rtl/uart_rx_core.sv
+rx_frame_formal.sv
+rx_wire_formal.sv

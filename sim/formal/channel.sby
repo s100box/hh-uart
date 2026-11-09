@@ -1,0 +1,86 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+
+[tasks]
+sync0_prove
+sync0_cover
+sync0_negative
+sync1_prove
+sync1_cover
+sync1_negative
+async0_prove
+async0_cover
+async0_negative
+async1_prove
+async1_cover
+async1_negative
+
+[options]
+timeout 240
+sync0_prove: mode prove
+sync0_prove: depth 40
+sync0_cover: mode cover
+sync0_cover: depth 192
+sync0_negative: mode bmc
+sync0_negative: depth 192
+sync1_prove: mode prove
+sync1_prove: depth 40
+sync1_cover: mode cover
+sync1_cover: depth 192
+sync1_negative: mode bmc
+sync1_negative: depth 192
+async0_prove: mode prove
+async0_prove: depth 40
+async0_cover: mode cover
+async0_cover: depth 192
+async0_negative: mode bmc
+async0_negative: depth 192
+async1_prove: mode prove
+async1_prove: depth 40
+async1_cover: mode cover
+async1_cover: depth 192
+async1_negative: mode bmc
+async1_negative: depth 192
+multiclock on
+
+[engines]
+sync0_prove: smtbmc boolector
+sync0_cover: smtbmc boolector
+sync0_negative: abc bmc3
+sync1_prove: smtbmc boolector
+sync1_cover: smtbmc boolector
+sync1_negative: abc bmc3
+async0_prove: smtbmc boolector
+async0_cover: smtbmc boolector
+async0_negative: abc bmc3
+async1_prove: smtbmc boolector
+async1_cover: smtbmc boolector
+async1_negative: abc bmc3
+
+[script]
+plugin -i slang
+sync0_prove: read_slang --top channel_formal -G SAME_CLOCK=1 -G ADAPTER=0 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+sync0_cover: read_slang --top channel_formal -G SAME_CLOCK=1 -G ADAPTER=0 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+sync0_negative: read_slang -D FORMAL_NEGATIVE --top channel_formal -G SAME_CLOCK=1 -G ADAPTER=0 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+sync1_prove: read_slang --top channel_formal -G SAME_CLOCK=1 -G ADAPTER=1 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+sync1_cover: read_slang --top channel_formal -G SAME_CLOCK=1 -G ADAPTER=1 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+sync1_negative: read_slang -D FORMAL_NEGATIVE --top channel_formal -G SAME_CLOCK=1 -G ADAPTER=1 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+async0_prove: read_slang --top channel_formal -G SAME_CLOCK=0 -G ADAPTER=0 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+async0_cover: read_slang --top channel_formal -G SAME_CLOCK=0 -G ADAPTER=0 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+async0_negative: read_slang -D FORMAL_NEGATIVE --top channel_formal -G SAME_CLOCK=0 -G ADAPTER=0 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+async1_prove: read_slang --top channel_formal -G SAME_CLOCK=0 -G ADAPTER=1 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+async1_cover: read_slang --top channel_formal -G SAME_CLOCK=0 -G ADAPTER=1 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+async1_negative: read_slang -D FORMAL_NEGATIVE --top channel_formal -G SAME_CLOCK=0 -G ADAPTER=1 usb_serial_if.sv usb_serial_fifo.sv usb_serial_chan.sv acia6551_to_usbserial.sv channel_formal.sv
+read_verilog -formal -sv channel_clock_formal.sv
+prep -top channel_clock_formal
+techmap
+opt
+setundef -undriven -anyseq
+
+[files]
+../../rtl/usb_serial_if.sv
+../../rtl/usb_serial_fifo.sv
+../../rtl/usb_serial_chan.sv
+../../rtl/acia6551_to_usbserial.sv
+channel_formal.sv
+channel_clock_formal.sv

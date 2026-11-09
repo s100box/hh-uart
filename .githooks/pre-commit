@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT OR Apache-2.0
+# SPDX-FileCopyrightText: 2026 Howard M. Harte
+# hh-uart commit gate: the Verible gate + every bench (ninja bench).
+# ../retrosim-build/hooks/gate-env.sh, when present, puts Verible and the OSS
+# CAD Suite on PATH from the workspace toolchain pin; without it the tools
+# must already be on PATH (oss-cad-suite is also looked for under $HOME).
+#
+# Bypass for a work-in-progress commit with:  SKIP_GATE=1 git commit ...
+# Enable in a fresh clone with:                git config core.hooksPath .githooks
+set -euo pipefail
+_geroot="$(git rev-parse --show-toplevel)"
+[ -f "$_geroot/../retrosim-build/hooks/gate-env.sh" ] && . "$_geroot/../retrosim-build/hooks/gate-env.sh"
+
+if [ -n "${SKIP_GATE:-}" ]; then echo "pre-commit: SKIP_GATE set — skipping"; exit 0; fi
+root="$(git rev-parse --show-toplevel)"
+for _oss in "${OSS_CAD_SUITE:-}" "$HOME/oss-cad-suite" \
+            "${USERPROFILE:+$(cygpath -u "$USERPROFILE" 2>/dev/null)/oss-cad-suite}"; do
+  [ -n "$_oss" ] && [ -d "$_oss/bin" ] && { export PATH="$_oss/bin:$_oss/lib:$PATH"; break; }
+done
+cd "$root/sim"
+echo "pre-commit: [1/2] Verible gate (syntax + lint + format-check)"
+ninja
+echo "pre-commit: [2/2] benches (iverilog)"
+if command -v iverilog >/dev/null 2>&1; then
+  ninja bench
+else
+  echo "pre-commit: (iverilog absent — benches skipped)"
+fi
+echo "pre-commit: gate PASS"
